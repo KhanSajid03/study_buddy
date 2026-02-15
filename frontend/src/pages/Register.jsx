@@ -35,6 +35,10 @@ function Register() {
     }
 
     const { confirmPassword, ...registerData } = formData;
+    // Convert empty email to null for backend validation
+    if (registerData.email === '') {
+      registerData.email = null;
+    }
     const success = await register(registerData);
 
     if (success) {

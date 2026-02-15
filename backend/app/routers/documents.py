@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 import os
 import shutil
@@ -57,9 +58,8 @@ async def upload_document(
 
     # Check user's total storage
     user_total_storage = (
-        db.query(Document)
+        db.query(func.sum(Document.file_size))
         .filter(Document.user_id == current_user.id)
-        .with_entities(db.func.sum(Document.file_size))
         .scalar()
         or 0
     )

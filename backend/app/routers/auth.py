@@ -76,8 +76,8 @@ def login(user_data: UserLogin, db: Session = Depends(get_db)):
             detail="Incorrect username or password",
         )
 
-    # Create access token
-    access_token = create_access_token(data={"sub": user.id})
+    # Create access token (sub must be a string for JWT)
+    access_token = create_access_token(data={"sub": str(user.id)})
 
     return {"access_token": access_token, "token_type": "bearer"}
 
